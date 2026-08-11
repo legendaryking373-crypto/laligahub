@@ -119,7 +119,7 @@ function TeamDetail() {
       <section className="mt-8">
         <h2 className="mb-3 text-lg uppercase tracking-wide">Squad</h2>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {(squad ?? []).map((player) => (
+          {(squad?.players ?? []).map((player) => (
             <div key={player.id} className="surface-panel flex items-center gap-3 p-3">
               <img src={player.photo} alt="" className="size-12 rounded-full object-cover" />
               <div className="min-w-0">
@@ -132,7 +132,7 @@ function TeamDetail() {
               </div>
             </div>
           ))}
-          {(squad ?? []).length === 0 && (
+          {(squad?.players ?? []).length === 0 && (
             <p className="text-sm text-muted-foreground">Squad list unavailable.</p>
           )}
         </div>
