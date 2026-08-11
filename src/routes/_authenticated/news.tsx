@@ -43,7 +43,7 @@ function NewsPage() {
             <p className="font-semibold leading-snug">{item.title}</p>
             <p className="mt-1 text-xs text-muted-foreground">
               {item.source}
-              {item.pubDate ? ` · ${new Date(item.pubDate).toLocaleString()}` : ""}
+              {item.published ? ` · ${new Date(item.published).toLocaleString()}` : ""}
             </p>
           </a>
         ))}
