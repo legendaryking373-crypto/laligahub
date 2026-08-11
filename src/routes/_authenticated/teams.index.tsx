@@ -6,7 +6,7 @@ import { AppShell } from "@/components/AppShell";
 import { Input } from "@/components/ui/input";
 import { standingsQuery, teamsQuery } from "@/lib/queries";
 
-export const Route = createFileRoute("/_authenticated/teams")({
+export const Route = createFileRoute("/_authenticated/teams/")({
   head: () => ({
     meta: [
       { title: "LaLiga clubs — LALIGA" },
