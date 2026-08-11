@@ -67,7 +67,7 @@ export function notifyBrowser(title: string, body?: string): void {
   if (typeof window === "undefined" || !("Notification" in window)) return;
   if (Notification.permission !== "granted") return;
   try {
-    new Notification(title, { body, icon: "/favicon.png", tag: title });
+    new Notification(title, { body: body ?? "", icon: "/favicon.png", tag: title });
   } catch {
     /* notification display is best-effort */
   }
