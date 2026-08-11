@@ -14,7 +14,108 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      alerts: {
+        Row: {
+          body: string | null
+          created_at: string
+          id: string
+          kind: string
+          read: boolean
+          title: string
+          user_id: string
+        }
+        Insert: {
+          body?: string | null
+          created_at?: string
+          id?: string
+          kind?: string
+          read?: boolean
+          title: string
+          user_id: string
+        }
+        Update: {
+          body?: string | null
+          created_at?: string
+          id?: string
+          kind?: string
+          read?: boolean
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      api_cache: {
+        Row: {
+          cache_key: string
+          created_at: string
+          expires_at: string
+          payload: Json
+        }
+        Insert: {
+          cache_key: string
+          created_at?: string
+          expires_at: string
+          payload: Json
+        }
+        Update: {
+          cache_key?: string
+          created_at?: string
+          expires_at?: string
+          payload?: Json
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          display_name: string | null
+          favorite_player_id: number | null
+          favorite_player_name: string | null
+          favorite_player_photo: string | null
+          favorite_team_id: number | null
+          favorite_team_logo: string | null
+          favorite_team_name: string | null
+          id: string
+          notify_goals: boolean
+          notify_kickoff: boolean
+          notify_news: boolean
+          onboarded: boolean
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string | null
+          favorite_player_id?: number | null
+          favorite_player_name?: string | null
+          favorite_player_photo?: string | null
+          favorite_team_id?: number | null
+          favorite_team_logo?: string | null
+          favorite_team_name?: string | null
+          id: string
+          notify_goals?: boolean
+          notify_kickoff?: boolean
+          notify_news?: boolean
+          onboarded?: boolean
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string | null
+          favorite_player_id?: number | null
+          favorite_player_name?: string | null
+          favorite_player_photo?: string | null
+          favorite_team_id?: number | null
+          favorite_team_logo?: string | null
+          favorite_team_name?: string | null
+          id?: string
+          notify_goals?: boolean
+          notify_kickoff?: boolean
+          notify_news?: boolean
+          onboarded?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
