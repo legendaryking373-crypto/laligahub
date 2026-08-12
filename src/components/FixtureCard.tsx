@@ -69,7 +69,7 @@ export function FixtureCard({
   return (
     <article
       className={cn(
-        "surface-panel lift p-4",
+        "surface-panel lift group p-4",
         involves && "border-primary/60 shadow-brand",
       )}
     >

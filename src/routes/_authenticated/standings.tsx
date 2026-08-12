@@ -27,8 +27,10 @@ function StandingsPage() {
 
   return (
     <AppShell>
-      <h1 className="text-4xl">Table</h1>
-      <p className="mt-1 text-sm text-muted-foreground">Season {data?.season ?? "—"}</p>
+      <h1 className="reveal text-4xl">Table</h1>
+      <p className="reveal mt-1 text-sm text-muted-foreground">
+        Season {data?.season ? `${data.season}/${String((data.season + 1) % 100).padStart(2, "0")}` : "—"}
+      </p>
 
       <div className="surface-panel mt-5 overflow-x-auto">
         <table className="w-full min-w-[640px] text-sm">
@@ -47,12 +49,12 @@ function StandingsPage() {
               <th className="p-3">Form</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="stagger">
             {(data?.rows ?? []).map((row) => (
               <tr
                 key={row.team.id}
                 className={cn(
-                  "border-b border-border/60 last:border-0",
+                  "border-b border-border/60 transition-colors last:border-0 hover:bg-secondary/70",
                   row.team.id === profile?.favorite_team_id && "bg-accent/40",
                 )}
               >
