@@ -1,4 +1,4 @@
-import logoAsset from "@/assets/laliga-logo.jpg.asset.json";
+import logoAsset from "@/assets/laliga-logo.png.asset.json";
 import { cn } from "@/lib/utils";
 
 export function BrandMark({
