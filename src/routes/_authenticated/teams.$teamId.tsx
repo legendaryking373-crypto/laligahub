@@ -62,7 +62,7 @@ function TeamDetail() {
       <div className="surface-panel flex flex-wrap items-center gap-4 p-6">
         {entry && <img src={entry.team.logo} alt="" className="size-20 object-contain" />}
         <div className="min-w-0 flex-1">
-          <h1 className="text-3xl">{entry?.team.name ?? "Club"}</h1>
+          <h1 className="reveal text-3xl">{entry?.team.name ?? "Club"}</h1>
           <p className="mt-1 text-sm text-muted-foreground">
             {entry?.venue?.name ?? "—"} · Founded {entry?.team.founded ?? "—"}
           </p>
