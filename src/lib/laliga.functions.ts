@@ -10,10 +10,10 @@ import type {
   StandingRow,
   TeamInfo,
 } from "./laliga-types";
-import { LEAGUE_ID, apiGet, fetchNews, getSeason } from "./laliga.server";
+import { LEAGUE_ID, apiGet, fetchNews, resolveSeason } from "./laliga.server";
 
 export const getStandings = createServerFn({ method: "GET" }).handler(async () => {
-  const season = getSeason();
+  const season = await resolveSeason();
   const data = await apiGet<{ league: { standings: StandingRow[][] } }>(
     `standings?league=${LEAGUE_ID}&season=${season}`,
     60 * 60 * 6,
@@ -22,12 +22,12 @@ export const getStandings = createServerFn({ method: "GET" }).handler(async () =
 });
 
 export const getTeams = createServerFn({ method: "GET" }).handler(async () => {
-  const season = getSeason();
+  const season = await resolveSeason();
   return apiGet<TeamInfo>(`teams?league=${LEAGUE_ID}&season=${season}`, 60 * 60 * 24);
 });
 
 export const getSeasonFixtures = createServerFn({ method: "GET" }).handler(async () => {
-  const season = getSeason();
+  const season = await resolveSeason();
   const fixtures = await apiGet<Fixture>(
     `fixtures?league=${LEAGUE_ID}&season=${season}`,
     60 * 60 * 3,
@@ -40,7 +40,7 @@ export const getLiveFixtures = createServerFn({ method: "GET" }).handler(async (
 );
 
 export const getTopScorers = createServerFn({ method: "GET" }).handler(async () => {
-  const season = getSeason();
+  const season = await resolveSeason();
   return apiGet<PlayerStat>(
     `players/topscorers?league=${LEAGUE_ID}&season=${season}`,
     60 * 60 * 12,
@@ -48,7 +48,7 @@ export const getTopScorers = createServerFn({ method: "GET" }).handler(async () 
 });
 
 export const getTopAssists = createServerFn({ method: "GET" }).handler(async () => {
-  const season = getSeason();
+  const season = await resolveSeason();
   return apiGet<PlayerStat>(
     `players/topassists?league=${LEAGUE_ID}&season=${season}`,
     60 * 60 * 12,
@@ -77,3 +77,8 @@ export const getPrediction = createServerFn({ method: "GET" })
 export const getNews = createServerFn({ method: "GET" }).handler(
   async (): Promise<NewsItem[]> => fetchNews(),
 );
+
+export const getActiveSeason = createServerFn({ method: "GET" }).handler(async () => {
+  const season = await resolveSeason();
+  return { season, label: `${season}/${String((season + 1) % 100).padStart(2, "0")}` };
+});
