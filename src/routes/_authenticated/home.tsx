@@ -78,7 +78,7 @@ function HomePage() {
     <AppShell>
       <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-4xl">
+          <h1 className="reveal text-4xl">
             {profile?.favorite_team_name ? (
               <>
                 <span className="text-display">Hala</span>{" "}
@@ -89,19 +89,26 @@ function HomePage() {
             )}
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Season {standings?.season ?? "—"} · {live?.length ?? 0} match
+            Season{" "}
+            {standings?.season
+              ? `${standings.season}/${String((standings.season + 1) % 100).padStart(2, "0")}`
+              : "—"}{" "}
+            · {live?.length ?? 0} match
             {(live?.length ?? 0) === 1 ? "" : "es"} live right now
           </p>
         </div>
         <Link to="/onboarding">
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" className="press">
             Change club or player
           </Button>
         </Link>
       </div>
 
       <section className="mb-8">
-        <h2 className="mb-3 text-lg uppercase tracking-wide">Live now</h2>
+        <h2 className="mb-3 flex items-center gap-2 text-lg uppercase tracking-wide">
+          <span className="live-ring inline-block size-2 rounded-full bg-live" />
+          Live now
+        </h2>
         {live && live.length > 0 ? (
           <div className="grid gap-3 md:grid-cols-2 stagger">
             {live.map((fixture) => (
@@ -114,7 +121,7 @@ function HomePage() {
             ))}
           </div>
         ) : (
-          <div className="surface-panel p-5 text-sm text-muted-foreground">
+          <div className="surface-panel pop p-5 text-sm text-muted-foreground">
             No LaLiga match is in play right now. Upcoming kick-offs are below.
           </div>
         )}
@@ -154,7 +161,7 @@ function HomePage() {
 
         <aside className="space-y-6">
           {myRow && (
-            <div className="surface-panel p-5">
+            <div className="surface-panel lift p-5">
               <h2 className="text-lg uppercase tracking-wide">Table position</h2>
               <div className="mt-3 flex items-center gap-3">
                 <span className="text-stat text-5xl text-primary">{myRow.rank}</span>
@@ -191,7 +198,7 @@ function HomePage() {
           )}
 
           {myPlayer && (
-            <div className="surface-panel p-5">
+            <div className="surface-panel lift p-5">
               <h2 className="text-lg uppercase tracking-wide">Your player</h2>
               <div className="mt-3 flex items-center gap-3">
                 <img
@@ -224,7 +231,7 @@ function HomePage() {
             </div>
           )}
 
-          <div className="surface-panel p-5">
+          <div className="surface-panel lift p-5">
             <h2 className="text-lg uppercase tracking-wide">Headlines</h2>
             <ul className="mt-3 space-y-3">
               {(news ?? []).slice(0, 5).map((item) => (
@@ -249,7 +256,7 @@ function HomePage() {
             </Link>
           </div>
 
-          <div className="surface-panel p-5">
+          <div className="surface-panel lift p-5">
             <h2 className="text-lg uppercase tracking-wide">Alerts</h2>
             <p className="mt-2 text-sm text-muted-foreground">
               Turn on goal and kick-off notifications for {profile?.favorite_team_name ?? "your club"}.
