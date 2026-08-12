@@ -33,7 +33,7 @@ function TeamsPage() {
 
   return (
     <AppShell>
-      <h1 className="text-4xl">Clubs</h1>
+      <h1 className="reveal text-4xl">Clubs</h1>
       <Input
         className="mt-4 max-w-sm"
         placeholder="Search clubs…"
@@ -43,15 +43,15 @@ function TeamsPage() {
 
       {isLoading && <p className="mt-5 text-sm text-muted-foreground">Loading clubs…</p>}
 
-      <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="stagger mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {filtered.map((entry) => (
           <Link
             key={entry.team.id}
             to="/teams/$teamId"
             params={{ teamId: String(entry.team.id) }}
-            className="surface-panel flex items-center gap-4 p-4 transition-all hover:border-primary/60"
+            className="surface-panel lift group flex items-center gap-4 p-4"
           >
-            <img src={entry.team.logo} alt="" className="size-14 object-contain" />
+            <img src={entry.team.logo} alt="" className="size-14 object-contain transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-6" />
             <div className="min-w-0">
               <p className="truncate font-semibold">{entry.team.name}</p>
               <p className="truncate text-xs text-muted-foreground">

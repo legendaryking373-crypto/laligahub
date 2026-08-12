@@ -4,12 +4,42 @@ const BASE = "https://v3.football.api-sports.io";
 
 export const LEAGUE_ID = 140;
 
+/** Fallback season if probing fails (newest season on the free API plan). */
+export const FALLBACK_SEASON = 2024;
+
+const SEASON_CACHE_KEY = "meta:active-season";
+
+/** LaLiga season label for a date (season starts in July/August). */
+function seasonLabelFor(date: Date): number {
+  return date.getUTCMonth() >= 6 ? date.getUTCFullYear() : date.getUTCFullYear() - 1;
+}
+
 /**
- * API-Sports free plans only expose seasons 2022-2024, so the season is
- * configurable and defaults to the newest one the free plan allows.
+ * Resolves the newest LaLiga season this API key can actually read. Free
+ * API-Sports plans are capped at 2024, so we probe from the current season
+ * downwards and cache the winner for a day. Set LALIGA_SEASON to force one.
  */
-export function getSeason(): number {
-  return Number(process.env["LALIGA_SEASON"] ?? 2024);
+export async function resolveSeason(): Promise<number> {
+  const override = process.env["LALIGA_SEASON"];
+  if (override) return Number(override);
+
+  const cached = await readCache(SEASON_CACHE_KEY);
+  if (cached?.fresh) return cached.payload as number;
+
+  const current = seasonLabelFor(new Date());
+  const candidates = [...new Set([current, current - 1, FALLBACK_SEASON])].filter(
+    (year) => year >= FALLBACK_SEASON,
+  );
+
+  for (const season of candidates) {
+    const rows = await apiGet<unknown>(`standings?league=${LEAGUE_ID}&season=${season}`, 60 * 60 * 6);
+    if (rows.length > 0) {
+      await writeCache(SEASON_CACHE_KEY, season, 60 * 60 * 24);
+      return season;
+    }
+  }
+
+  return (cached?.payload as number | undefined) ?? FALLBACK_SEASON;
 }
 
 async function readCache(key: string): Promise<{ payload: unknown; fresh: boolean } | null> {

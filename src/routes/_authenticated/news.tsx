@@ -24,21 +24,21 @@ function NewsPage() {
 
   return (
     <AppShell>
-      <h1 className="text-4xl">News</h1>
+      <h1 className="reveal text-4xl">News</h1>
       <p className="mt-1 text-sm text-muted-foreground">
         Headlines from across the football press, refreshed every few minutes.
       </p>
 
       {isLoading && <p className="mt-5 text-sm text-muted-foreground">Loading headlines…</p>}
 
-      <div className="mt-5 space-y-3">
+      <div className="stagger mt-5 space-y-3">
         {(news ?? []).map((item) => (
           <a
             key={item.link}
             href={item.link}
             target="_blank"
             rel="noreferrer"
-            className="surface-panel block p-4 transition-all hover:border-primary/60"
+            className="surface-panel lift block p-4"
           >
             <p className="font-semibold leading-snug">{item.title}</p>
             <p className="mt-1 text-xs text-muted-foreground">

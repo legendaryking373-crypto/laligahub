@@ -71,12 +71,13 @@ function Onboarding() {
   }
 
   return (
-    <div className="mx-auto w-full max-w-4xl px-4 py-10">
-      <BrandMark size={36} />
+    <div className="relative mx-auto w-full max-w-4xl px-4 py-10">
+      <div className="glow-breathe pointer-events-none absolute -top-24 left-1/2 -z-10 size-[32rem] -translate-x-1/2 rounded-full bg-primary/15 blur-3xl" />
+      <BrandMark size={36} className="float" />
 
       {step === 1 ? (
         <>
-          <h1 className="mt-8 text-4xl">Pick your club</h1>
+          <h1 className="reveal mt-8 text-4xl">Pick your club</h1>
           <p className="mt-2 text-sm text-muted-foreground">
             We'll pin their fixtures, form and goal alerts to the top of your feed.
           </p>
@@ -84,18 +85,18 @@ function Onboarding() {
           {teamsLoading ? (
             <p className="mt-8 text-sm text-muted-foreground">Loading LaLiga clubs…</p>
           ) : (
-            <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+            <div className="stagger mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
               {(teams ?? []).map((entry) => (
                 <button
                   key={entry.team.id}
                   type="button"
                   onClick={() => setTeamId(entry.team.id)}
                   className={cn(
-                    "surface-panel flex flex-col items-center gap-2 p-4 transition-all hover:border-primary/60",
+                    "surface-panel lift group flex flex-col items-center gap-2 p-4",
                     teamId === entry.team.id && "border-primary shadow-brand",
                   )}
                 >
-                  <img src={entry.team.logo} alt="" className="size-12 object-contain" />
+                  <img src={entry.team.logo} alt="" className="size-12 object-contain transition-transform duration-500 group-hover:scale-115 group-hover:-rotate-6" />
                   <span className="text-center text-xs font-semibold">{entry.team.name}</span>
                 </button>
               ))}
@@ -105,7 +106,7 @@ function Onboarding() {
           <div className="mt-8 flex justify-end">
             <Button
               size="lg"
-              className="font-bold uppercase"
+              className="press font-bold uppercase"
               disabled={!teamId}
               onClick={() => setStep(2)}
             >
@@ -115,7 +116,7 @@ function Onboarding() {
         </>
       ) : (
         <>
-          <h1 className="mt-8 text-4xl">Pick a player to follow</h1>
+          <h1 className="reveal mt-8 text-4xl">Pick a player to follow</h1>
           <p className="mt-2 text-sm text-muted-foreground">
             Top scorers first — search to find anyone else in the list.
           </p>
@@ -127,7 +128,7 @@ function Onboarding() {
             onChange={(e) => setPlayerFilter(e.target.value)}
           />
 
-          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="stagger mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {shownPlayers.slice(0, 24).map((entry) => (
               <button
                 key={entry.player.id}
@@ -140,7 +141,7 @@ function Onboarding() {
                     photo: entry.player.photo,
                   })
                 }
-                className="surface-panel flex items-center gap-3 p-3 text-left transition-all hover:border-primary/60"
+                className="surface-panel lift group flex items-center gap-3 p-3 text-left"
               >
                 <img src={entry.player.photo} alt="" className="size-12 rounded-full object-cover" />
                 <span className="min-w-0">

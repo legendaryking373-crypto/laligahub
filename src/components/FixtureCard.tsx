@@ -35,9 +35,9 @@ function ProbabilityBar({ fixtureId }: { fixtureId: number }) {
   return (
     <div className="space-y-2">
       <div className="flex h-2.5 w-full overflow-hidden rounded-full bg-secondary">
-        <span style={{ width: `${home}%` }} className="bg-primary" />
-        <span style={{ width: `${draw}%` }} className="bg-muted-foreground/60" />
-        <span style={{ width: `${away}%` }} className="bg-chart-3" />
+        <span style={{ width: `${home}%` }} className="bar-grow bg-primary" />
+        <span style={{ width: `${draw}%`, animationDelay: "0.08s" }} className="bar-grow bg-muted-foreground/60" />
+        <span style={{ width: `${away}%`, animationDelay: "0.16s" }} className="bar-grow bg-chart-3" />
       </div>
       <div className="flex justify-between text-xs font-semibold text-muted-foreground">
         <span>Home {home}%</span>
@@ -69,7 +69,7 @@ export function FixtureCard({
   return (
     <article
       className={cn(
-        "surface-panel p-4 transition-colors",
+        "surface-panel lift group p-4",
         involves && "border-primary/60 shadow-brand",
       )}
     >
@@ -79,7 +79,7 @@ export function FixtureCard({
         </span>
         {live ? (
           <Badge className="gap-1 bg-live text-live-foreground hover:bg-live">
-            <span className="pulse-live size-1.5 rounded-full bg-live-foreground" />
+            <span className="live-ring pulse-live size-1.5 rounded-full bg-live-foreground" />
             {fixture.fixture.status.elapsed ?? 0}&rsquo;
           </Badge>
         ) : done ? (
@@ -91,17 +91,17 @@ export function FixtureCard({
 
       <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
         <div className="flex items-center gap-2 overflow-hidden">
-          <img src={home.logo} alt="" className="size-8 shrink-0 object-contain" />
+          <img src={home.logo} alt="" className="size-8 shrink-0 object-contain transition-transform duration-300 group-hover:scale-110" />
           <span className="truncate text-sm font-semibold">{home.name}</span>
         </div>
-        <div className="text-stat text-2xl tabular-nums">
+        <div className="text-stat pop text-2xl tabular-nums">
           {fixture.goals.home ?? "–"}
           <span className="mx-1 text-muted-foreground">:</span>
           {fixture.goals.away ?? "–"}
         </div>
         <div className="flex items-center justify-end gap-2 overflow-hidden">
           <span className="truncate text-right text-sm font-semibold">{away.name}</span>
-          <img src={away.logo} alt="" className="size-8 shrink-0 object-contain" />
+          <img src={away.logo} alt="" className="size-8 shrink-0 object-contain transition-transform duration-300 group-hover:scale-110" />
         </div>
       </div>
 

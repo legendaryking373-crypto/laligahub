@@ -62,7 +62,7 @@ function TeamDetail() {
       <div className="surface-panel flex flex-wrap items-center gap-4 p-6">
         {entry && <img src={entry.team.logo} alt="" className="size-20 object-contain" />}
         <div className="min-w-0 flex-1">
-          <h1 className="text-3xl">{entry?.team.name ?? "Club"}</h1>
+          <h1 className="reveal text-3xl">{entry?.team.name ?? "Club"}</h1>
           <p className="mt-1 text-sm text-muted-foreground">
             {entry?.venue?.name ?? "—"} · Founded {entry?.team.founded ?? "—"}
           </p>
@@ -118,7 +118,7 @@ function TeamDetail() {
 
       <section className="mt-8">
         <h2 className="mb-3 text-lg uppercase tracking-wide">Squad</h2>
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 stagger">
           {(squad?.players ?? []).map((player) => (
             <div key={player.id} className="surface-panel flex items-center gap-3 p-3">
               <img src={player.photo} alt="" className="size-12 rounded-full object-cover" />

@@ -37,35 +37,35 @@ function Landing() {
   return (
     <div className="min-h-screen bg-background">
       <header className="mx-auto flex h-20 w-full max-w-6xl items-center justify-between px-4">
-        <BrandMark size={40} />
+        <BrandMark size={40} className="float" />
         <Link to="/auth">
           <Button variant="ghost">Sign in</Button>
         </Link>
       </header>
 
       <section className="relative overflow-hidden">
-        <div className="pointer-events-none absolute -top-40 left-1/2 size-[36rem] -translate-x-1/2 rounded-full bg-primary/20 blur-3xl" />
+        <div className="glow-breathe pointer-events-none absolute -top-40 left-1/2 size-[36rem] -translate-x-1/2 rounded-full bg-primary/20 blur-3xl" />
         <div className="relative mx-auto w-full max-w-6xl px-4 pb-16 pt-10 text-center">
-          <p className="text-xs font-bold uppercase tracking-[0.3em] text-primary">
+          <p className="reveal text-xs font-bold uppercase tracking-[0.3em] text-primary">
             Spanish first division
           </p>
           <h1 className="mx-auto mt-4 max-w-3xl text-5xl leading-[0.95] sm:text-7xl">
-            <span className="text-display">Every goal.</span>{" "}
-            <span className="text-display text-primary">Every stat.</span>{" "}
-            <span className="text-display">Every matchday.</span>
+            <span className="reveal text-display inline-block">Every goal.</span>{" "}
+            <span className="reveal text-display inline-block text-primary" style={{ animationDelay: "0.12s" }}>Every stat.</span>{" "}
+            <span className="reveal text-display inline-block" style={{ animationDelay: "0.24s" }}>Every matchday.</span>
           </h1>
-          <p className="mx-auto mt-6 max-w-xl text-lg text-muted-foreground">
+          <p className="reveal mx-auto mt-6 max-w-xl text-lg text-muted-foreground" style={{ animationDelay: "0.34s" }}>
             Live LaLiga scores, win probabilities, deep team and player numbers, and alerts for the
             club and player you follow.
           </p>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <div className="reveal mt-8 flex flex-wrap items-center justify-center gap-3" style={{ animationDelay: "0.44s" }}>
             <Link to="/auth" search={{ mode: "signup" }}>
-              <Button size="lg" className="px-8 text-base font-bold uppercase tracking-wide">
+              <Button size="lg" className="press px-8 text-base font-bold uppercase tracking-wide shadow-brand">
                 Create free account
               </Button>
             </Link>
             <Link to="/auth">
-              <Button size="lg" variant="outline" className="px-8 text-base font-bold uppercase">
+              <Button size="lg" variant="outline" className="press px-8 text-base font-bold uppercase">
                 I already have one
               </Button>
             </Link>
@@ -74,10 +74,10 @@ function Landing() {
       </section>
 
       <section className="mx-auto w-full max-w-6xl px-4 pb-20">
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 stagger">
           {FEATURES.map((feature) => (
-            <div key={feature.title} className="surface-panel p-5">
-              <feature.icon className="size-6 text-primary" />
+            <div key={feature.title} className="surface-panel lift group p-5">
+              <feature.icon className="size-6 text-primary transition-transform duration-300 group-hover:scale-125 group-hover:-rotate-6" />
               <h2 className="mt-4 text-lg">{feature.title}</h2>
               <p className="mt-1 text-sm text-muted-foreground">{feature.body}</p>
             </div>
