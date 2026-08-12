@@ -38,7 +38,7 @@ function ScoresPage() {
 
   return (
     <AppShell>
-      <h1 className="text-4xl">Scores</h1>
+      <h1 className="reveal text-4xl">Scores</h1>
       <p className="mt-1 text-sm text-muted-foreground">
         Live matches refresh every minute. Tap “Probability” on any match for model odds.
       </p>
@@ -55,7 +55,7 @@ function ScoresPage() {
             key={value}
             variant={tab === value ? "default" : "outline"}
             size="sm"
-            className="font-bold uppercase"
+            className="press font-bold uppercase"
             onClick={() => setTab(value)}
           >
             {label}
@@ -63,7 +63,7 @@ function ScoresPage() {
         ))}
       </div>
 
-      <div className="mt-5 grid gap-3 md:grid-cols-2">
+      <div key={tab} className="stagger mt-5 grid gap-3 md:grid-cols-2">
         {list.map((fixture) => (
           <FixtureCard
             key={fixture.fixture.id}
@@ -74,7 +74,7 @@ function ScoresPage() {
       </div>
 
       {list.length === 0 && (
-        <div className="surface-panel mt-5 p-6 text-sm text-muted-foreground">
+        <div className="surface-panel pop mt-5 p-6 text-sm text-muted-foreground">
           {tab === "live"
             ? "No LaLiga match is in play right now."
             : "Nothing to show for this filter yet."}

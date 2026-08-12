@@ -53,7 +53,7 @@ function PlayersPage() {
 
   return (
     <AppShell>
-      <h1 className="text-4xl">Players</h1>
+      <h1 className="reveal text-4xl">Players</h1>
       <p className="mt-1 text-sm text-muted-foreground">
         Season leaderboards with goals, assists, minutes, ratings and discipline.
       </p>
@@ -69,7 +69,7 @@ function PlayersPage() {
             key={value}
             size="sm"
             variant={board === value ? "default" : "outline"}
-            className="font-bold uppercase"
+            className="press font-bold uppercase"
             onClick={() => setBoard(value)}
           >
             {label}
@@ -83,7 +83,7 @@ function PlayersPage() {
         />
       </div>
 
-      <div className="mt-5 space-y-3">
+      <div key={board} className="stagger mt-5 space-y-3">
         {filtered.map((entry, index) => {
           const line = entry.statistics[0];
           const isFollowing = profile?.favorite_player_id === entry.player.id;
@@ -91,12 +91,12 @@ function PlayersPage() {
             <div
               key={entry.player.id}
               className={cn(
-                "surface-panel flex flex-wrap items-center gap-4 p-4",
+                "surface-panel lift group flex flex-wrap items-center gap-4 p-4",
                 isFollowing && "border-primary/70",
               )}
             >
               <span className="text-stat w-8 text-xl text-muted-foreground">{index + 1}</span>
-              <img src={entry.player.photo} alt="" className="size-12 rounded-full object-cover" />
+              <img src={entry.player.photo} alt="" className="size-12 rounded-full object-cover transition-transform duration-500 group-hover:scale-110" />
               <div className="min-w-[9rem] flex-1">
                 <p className="font-semibold">{entry.player.name}</p>
                 <p className="text-xs text-muted-foreground">
@@ -113,7 +113,7 @@ function PlayersPage() {
                   ["Rating", Number(line?.games.rating ?? 0).toFixed(1)],
                   ["YC", line?.cards.yellow ?? 0],
                 ].map(([label, value]) => (
-                  <div key={String(label)} className="rounded-md bg-secondary px-3 py-1.5 text-center">
+                  <div key={String(label)} className="rounded-md bg-secondary px-3 py-1.5 text-center transition-colors group-hover:bg-accent">
                     <p className="text-stat text-sm">{value}</p>
                     <p className="text-[10px] uppercase text-muted-foreground">{label}</p>
                   </div>
