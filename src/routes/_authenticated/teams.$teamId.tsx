@@ -118,7 +118,7 @@ function TeamDetail() {
 
       <section className="mt-8">
         <h2 className="mb-3 text-lg uppercase tracking-wide">Squad</h2>
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 stagger">
           {(squad?.players ?? []).map((player) => (
             <div key={player.id} className="surface-panel flex items-center gap-3 p-3">
               <img src={player.photo} alt="" className="size-12 rounded-full object-cover" />

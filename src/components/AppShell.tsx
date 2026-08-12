@@ -74,7 +74,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                 key={item.to}
                 to={item.to}
                 className={cn(
-                  "rounded-md px-3 py-2 text-sm font-semibold uppercase tracking-wide text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground",
+                  "underline-sweep press rounded-md px-3 py-2 text-sm font-semibold uppercase tracking-wide text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground",
                   pathname === item.to && "bg-secondary text-foreground",
                 )}
               >
@@ -89,7 +89,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                 <Bell className="size-4" />
               </Button>
               {unread > 0 && (
-                <span className="absolute -right-0.5 -top-0.5 flex size-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
+                <span className="pop absolute -right-0.5 -top-0.5 flex size-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
                   {unread > 9 ? "9+" : unread}
                 </span>
               )}
@@ -100,7 +100,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                 <img
                   src={profile.favorite_team_logo}
                   alt={profile.favorite_team_name ?? "Your team"}
-                  className="size-8 rounded-full border border-border bg-elevated p-1"
+                  className="press size-8 rounded-full border border-border bg-elevated p-1 transition-transform hover:rotate-6"
                 />
               </Link>
             )}
@@ -128,7 +128,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                   to={item.to}
                   onClick={() => setOpen(false)}
                   className={cn(
-                    "rounded-md bg-secondary px-3 py-2 text-center text-xs font-bold uppercase",
+                    "press rounded-md bg-secondary px-3 py-2 text-center text-xs font-bold uppercase transition-colors",
                     pathname === item.to && "bg-primary text-primary-foreground",
                   )}
                 >
@@ -140,7 +140,12 @@ export function AppShell({ children }: { children: ReactNode }) {
         )}
       </header>
 
-      <main className="mx-auto w-full max-w-6xl px-4 py-6">{children}</main>
+      <main className="relative mx-auto w-full max-w-6xl px-4 py-6">
+        <div className="pointer-events-none fixed left-1/2 top-0 -z-10 size-[42rem] -translate-x-1/2 rounded-full bg-primary/10 blur-3xl glow-breathe" />
+        <div key={pathname} className="reveal">
+          {children}
+        </div>
+      </main>
 
       <footer className="mx-auto w-full max-w-6xl px-4 pb-10 pt-4 text-xs text-muted-foreground">
         Match data by API-Sports · headlines from public news feeds. Unofficial fan app.

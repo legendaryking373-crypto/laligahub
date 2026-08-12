@@ -103,7 +103,7 @@ function HomePage() {
       <section className="mb-8">
         <h2 className="mb-3 text-lg uppercase tracking-wide">Live now</h2>
         {live && live.length > 0 ? (
-          <div className="grid gap-3 md:grid-cols-2">
+          <div className="grid gap-3 md:grid-cols-2 stagger">
             {live.map((fixture) => (
               <FixtureCard
                 key={fixture.fixture.id}
@@ -120,7 +120,7 @@ function HomePage() {
         )}
       </section>
 
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid gap-6 lg:grid-cols-3 stagger">
         <section className="lg:col-span-2 space-y-6">
           {nextFixture && (
             <div>
@@ -134,7 +134,7 @@ function HomePage() {
           {lastResults.length > 0 && (
             <div>
               <h2 className="mb-3 text-lg uppercase tracking-wide">Recent results</h2>
-              <div className="grid gap-3 sm:grid-cols-2">
+              <div className="grid gap-3 sm:grid-cols-2 stagger">
                 {lastResults.map((fixture) => (
                   <FixtureCard key={fixture.fixture.id} fixture={fixture} highlightTeamId={teamId} />
                 ))}
@@ -144,7 +144,7 @@ function HomePage() {
 
           <div>
             <h2 className="mb-3 text-lg uppercase tracking-wide">Around the league</h2>
-            <div className="grid gap-3 sm:grid-cols-2">
+            <div className="grid gap-3 sm:grid-cols-2 stagger">
               {upcoming.map((fixture) => (
                 <FixtureCard key={fixture.fixture.id} fixture={fixture} highlightTeamId={teamId} />
               ))}
