@@ -10,8 +10,8 @@ import { lovable } from "@/integrations/lovable";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/auth")({
-  validateSearch: (search: { mode?: "signin" | "signup" }) => ({
-    mode: search.mode === "signup" ? ("signup" as const) : ("signin" as const),
+  validateSearch: (search: { mode?: "signin" | "signup" }): { mode?: "signin" | "signup" } => ({
+    ...(search.mode === "signup" ? { mode: "signup" as const } : {}),
   }),
 
   head: () => ({
