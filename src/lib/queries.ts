@@ -10,6 +10,8 @@ import {
   getTeams,
   getTopAssists,
   getTopScorers,
+  getTransfers,
+  getUpcomingFixtures,
 } from "./laliga.functions";
 
 export const standingsQuery = () =>
@@ -55,3 +57,18 @@ export const predictionQuery = (fixtureId: number) =>
 
 export const newsQuery = () =>
   queryOptions({ queryKey: ["news"], queryFn: () => getNews(), staleTime: 1000 * 60 * 10 });
+
+export const upcomingQuery = () =>
+  queryOptions({
+    queryKey: ["upcoming"],
+    queryFn: () => getUpcomingFixtures(),
+    staleTime: 1000 * 60 * 15,
+  });
+
+export const transfersQuery = (teamId: number) =>
+  queryOptions({
+    queryKey: ["transfers", teamId],
+    queryFn: () => getTransfers({ data: { teamId } }),
+    staleTime: 1000 * 60 * 60 * 6,
+    enabled: teamId > 0,
+  });

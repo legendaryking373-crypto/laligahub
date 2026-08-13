@@ -10,7 +10,15 @@ import type {
   StandingRow,
   TeamInfo,
 } from "./laliga-types";
-import { LEAGUE_ID, apiGet, fetchNews, resolveSeason } from "./laliga.server";
+import type { Transfer } from "./laliga-types";
+import {
+  LEAGUE_ID,
+  apiGet,
+  fetchNews,
+  fetchTransfers,
+  fetchUpcoming,
+  resolveSeason,
+} from "./laliga.server";
 
 export const getStandings = createServerFn({ method: "GET" }).handler(async () => {
   const season = await resolveSeason();
@@ -82,3 +90,13 @@ export const getActiveSeason = createServerFn({ method: "GET" }).handler(async (
   const season = await resolveSeason();
   return { season, label: `${season}/${String((season + 1) % 100).padStart(2, "0")}` };
 });
+
+export const getUpcomingFixtures = createServerFn({ method: "GET" }).handler(
+  async (): Promise<Fixture[]> => (await fetchUpcoming(24)) as Fixture[],
+);
+
+export const getTransfers = createServerFn({ method: "GET" })
+  .inputValidator((input: { teamId: number }) => z.object({ teamId: z.number() }).parse(input))
+  .handler(async ({ data }): Promise<Transfer[]> =>
+    (await fetchTransfers(data.teamId)) as Transfer[],
+  );

@@ -10,9 +10,10 @@ import { lovable } from "@/integrations/lovable";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/auth")({
-  validateSearch: (search: Record<string, unknown>) => ({
-    mode: search["mode"] === "signup" ? ("signup" as const) : ("signin" as const),
+  validateSearch: (search: { mode?: "signin" | "signup" }): { mode?: "signin" | "signup" } => ({
+    ...(search.mode === "signup" ? { mode: "signup" as const } : {}),
   }),
+
   head: () => ({
     meta: [
       { title: "Sign in — LALIGA" },
@@ -59,7 +60,8 @@ function AuthPage() {
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
-        navigate({ to: "/home" });
+        await supabase.auth.getUser();
+        await navigate({ to: "/home", replace: true });
       }
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Authentication failed");
@@ -79,7 +81,8 @@ function AuthPage() {
       return;
     }
     if (result.redirected) return;
-    navigate({ to: "/home" });
+    await supabase.auth.getUser();
+    await navigate({ to: "/home", replace: true });
   }
 
   return (

@@ -157,3 +157,28 @@ export async function fetchNews(): Promise<NewsItem[]> {
     return (cached?.payload as NewsItem[]) ?? [];
   }
 }
+
+/**
+ * Upcoming LaLiga fixtures. Tries the season-agnostic `next` endpoint first so
+ * the app still shows real kick-offs when the resolved season has finished,
+ * then falls back to unplayed fixtures inside the resolved season.
+ */
+export async function fetchUpcoming(limit: number): Promise<unknown[]> {
+  const next = await apiGet<unknown>(`fixtures?league=${LEAGUE_ID}&next=${limit}`, 60 * 30);
+  if (next.length > 0) return next;
+
+  const season = await resolveSeason();
+  const all = await apiGet<{ fixture: { timestamp: number; status: { short: string } } }>(
+    `fixtures?league=${LEAGUE_ID}&season=${season}`,
+    60 * 60 * 3,
+  );
+  return all
+    .filter((f) => ["NS", "TBD", "PST"].includes(f.fixture.status.short))
+    .sort((a, b) => a.fixture.timestamp - b.fixture.timestamp)
+    .slice(0, limit);
+}
+
+/** Recent transfers for a club (free endpoint, not season-limited). */
+export async function fetchTransfers(teamId: number): Promise<unknown[]> {
+  return apiGet<unknown>(`transfers?team=${teamId}`, 60 * 60 * 12);
+}

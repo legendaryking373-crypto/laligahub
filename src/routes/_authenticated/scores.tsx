@@ -7,7 +7,7 @@ import { FixtureCard } from "@/components/FixtureCard";
 import { Button } from "@/components/ui/button";
 import { useProfile } from "@/hooks/useProfile";
 import { isFinished, isLive } from "@/lib/laliga-types";
-import { fixturesQuery, liveQuery } from "@/lib/queries";
+import { fixturesQuery, liveQuery, upcomingQuery } from "@/lib/queries";
 
 export const Route = createFileRoute("/_authenticated/scores")({
   head: () => ({
@@ -31,8 +31,12 @@ function ScoresPage() {
   const { data: profile } = useProfile();
   const { data: live } = useQuery(liveQuery());
   const { data: fixtures } = useQuery(fixturesQuery());
+  const { data: nextUp } = useQuery(upcomingQuery());
 
-  const upcoming = (fixtures ?? []).filter((f) => !isFinished(f) && !isLive(f)).slice(0, 30);
+  const upcoming = (nextUp && nextUp.length > 0
+    ? nextUp
+    : (fixtures ?? []).filter((f) => !isFinished(f) && !isLive(f))
+  ).slice(0, 30);
   const results = (fixtures ?? []).filter(isFinished).reverse().slice(0, 30);
   const list = tab === "live" ? (live ?? []) : tab === "upcoming" ? upcoming : results;
 
@@ -69,6 +73,7 @@ function ScoresPage() {
             key={fixture.fixture.id}
             fixture={fixture}
             highlightTeamId={profile?.favorite_team_id ?? null}
+            showProbability={tab !== "results"}
           />
         ))}
       </div>

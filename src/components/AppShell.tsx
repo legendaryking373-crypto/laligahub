@@ -17,6 +17,7 @@ const NAV = [
   { to: "/standings", label: "Table" },
   { to: "/teams", label: "Teams" },
   { to: "/players", label: "Players" },
+  { to: "/transfers", label: "Transfers" },
   { to: "/news", label: "News" },
 ] as const;
 
