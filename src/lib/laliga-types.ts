@@ -122,3 +122,13 @@ export function scoreLine(fixture: Fixture): string {
   if (home === null || away === null) return "vs";
   return `${home} - ${away}`;
 }
+
+export interface Transfer {
+  player: { id: number; name: string };
+  update: string;
+  transfers: {
+    date: string;
+    type: string | null;
+    teams: { in: TeamRef; out: TeamRef };
+  }[];
+}
