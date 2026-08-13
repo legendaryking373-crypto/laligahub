@@ -20,6 +20,7 @@ import { Route as AuthenticatedPlayersRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedScoresRouteImport } from './routes/_authenticated/scores'
 import { Route as AuthenticatedStandingsRouteImport } from './routes/_authenticated/standings'
+import { Route as AuthenticatedTransfersRouteImport } from './routes/_authenticated/transfers'
 import { Route as AuthenticatedTeamsIndexRouteImport } from './routes/_authenticated/teams.index'
 import { Route as AuthenticatedTeamsTeamIdRouteImport } from './routes/_authenticated/teams.$teamId'
 
@@ -77,6 +78,11 @@ const AuthenticatedStandingsRoute = AuthenticatedStandingsRouteImport.update({
   path: '/standings',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedTransfersRoute = AuthenticatedTransfersRouteImport.update({
+  id: '/transfers',
+  path: '/transfers',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedTeamsIndexRoute = AuthenticatedTeamsIndexRouteImport.update({
   id: '/teams/',
   path: '/teams/',
@@ -100,6 +106,7 @@ export interface FileRoutesByFullPath {
   '/profile': typeof AuthenticatedProfileRoute
   '/scores': typeof AuthenticatedScoresRoute
   '/standings': typeof AuthenticatedStandingsRoute
+  '/transfers': typeof AuthenticatedTransfersRoute
   '/teams/$teamId': typeof AuthenticatedTeamsTeamIdRoute
   '/teams/': typeof AuthenticatedTeamsIndexRoute
 }
@@ -114,6 +121,7 @@ export interface FileRoutesByTo {
   '/profile': typeof AuthenticatedProfileRoute
   '/scores': typeof AuthenticatedScoresRoute
   '/standings': typeof AuthenticatedStandingsRoute
+  '/transfers': typeof AuthenticatedTransfersRoute
   '/teams/$teamId': typeof AuthenticatedTeamsTeamIdRoute
   '/teams': typeof AuthenticatedTeamsIndexRoute
 }
@@ -130,6 +138,7 @@ export interface FileRoutesById {
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/scores': typeof AuthenticatedScoresRoute
   '/_authenticated/standings': typeof AuthenticatedStandingsRoute
+  '/_authenticated/transfers': typeof AuthenticatedTransfersRoute
   '/_authenticated/teams/$teamId': typeof AuthenticatedTeamsTeamIdRoute
   '/_authenticated/teams/': typeof AuthenticatedTeamsIndexRoute
 }
@@ -146,6 +155,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/scores'
     | '/standings'
+    | '/transfers'
     | '/teams/$teamId'
     | '/teams/'
   fileRoutesByTo: FileRoutesByTo
@@ -160,6 +170,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/scores'
     | '/standings'
+    | '/transfers'
     | '/teams/$teamId'
     | '/teams'
   id:
@@ -175,6 +186,7 @@ export interface FileRouteTypes {
     | '/_authenticated/profile'
     | '/_authenticated/scores'
     | '/_authenticated/standings'
+    | '/_authenticated/transfers'
     | '/_authenticated/teams/$teamId'
     | '/_authenticated/teams/'
   fileRoutesById: FileRoutesById
@@ -264,6 +276,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedStandingsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/transfers': {
+      id: '/_authenticated/transfers'
+      path: '/transfers'
+      fullPath: '/transfers'
+      preLoaderRoute: typeof AuthenticatedTransfersRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/teams/': {
       id: '/_authenticated/teams/'
       path: '/teams'
@@ -290,6 +309,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedScoresRoute: typeof AuthenticatedScoresRoute
   AuthenticatedStandingsRoute: typeof AuthenticatedStandingsRoute
+  AuthenticatedTransfersRoute: typeof AuthenticatedTransfersRoute
   AuthenticatedTeamsTeamIdRoute: typeof AuthenticatedTeamsTeamIdRoute
   AuthenticatedTeamsIndexRoute: typeof AuthenticatedTeamsIndexRoute
 }
@@ -303,6 +323,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedScoresRoute: AuthenticatedScoresRoute,
   AuthenticatedStandingsRoute: AuthenticatedStandingsRoute,
+  AuthenticatedTransfersRoute: AuthenticatedTransfersRoute,
   AuthenticatedTeamsTeamIdRoute: AuthenticatedTeamsTeamIdRoute,
   AuthenticatedTeamsIndexRoute: AuthenticatedTeamsIndexRoute,
 }
