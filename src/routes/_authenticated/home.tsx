@@ -9,7 +9,14 @@ import { Button } from "@/components/ui/button";
 import { notifyBrowser, useAlertActions } from "@/hooks/useAlerts";
 import { useProfile } from "@/hooks/useProfile";
 import { isFinished, isLive, type Fixture } from "@/lib/laliga-types";
-import { fixturesQuery, liveQuery, newsQuery, scorersQuery, standingsQuery } from "@/lib/queries";
+import {
+  fixturesQuery,
+  liveQuery,
+  newsQuery,
+  scorersQuery,
+  standingsQuery,
+  upcomingQuery,
+} from "@/lib/queries";
 
 export const Route = createFileRoute("/_authenticated/home")({
   head: () => ({
@@ -55,6 +62,7 @@ function HomePage() {
   const { data: standings } = useQuery(standingsQuery());
   const { data: scorers } = useQuery(scorersQuery());
   const { data: news } = useQuery(newsQuery());
+  const { data: nextUp } = useQuery(upcomingQuery());
 
   useEffect(() => {
     if (!profileLoading && profile && !profile.onboarded) {
@@ -68,9 +76,14 @@ function HomePage() {
   const teamFixtures = (fixtures ?? []).filter(
     (f) => f.teams.home.id === teamId || f.teams.away.id === teamId,
   );
-  const nextFixture = teamFixtures.find((f) => !isFinished(f) && !isLive(f));
+  const nextFixture =
+    (nextUp ?? []).find((f) => f.teams.home.id === teamId || f.teams.away.id === teamId) ??
+    teamFixtures.find((f) => !isFinished(f) && !isLive(f));
   const lastResults = teamFixtures.filter(isFinished).slice(-3).reverse();
-  const upcoming = (fixtures ?? []).filter((f) => !isFinished(f) && !isLive(f)).slice(0, 4);
+  const upcoming = (nextUp && nextUp.length > 0
+    ? nextUp
+    : (fixtures ?? []).filter((f) => !isFinished(f) && !isLive(f))
+  ).slice(0, 4);
   const myRow = (standings?.rows ?? []).find((row) => row.team.id === teamId);
   const myPlayer = (scorers ?? []).find((p) => p.player.id === profile?.favorite_player_id);
 
@@ -153,9 +166,19 @@ function HomePage() {
             <h2 className="mb-3 text-lg uppercase tracking-wide">Around the league</h2>
             <div className="grid gap-3 sm:grid-cols-2 stagger">
               {upcoming.map((fixture) => (
-                <FixtureCard key={fixture.fixture.id} fixture={fixture} highlightTeamId={teamId} />
+                <FixtureCard
+                  key={fixture.fixture.id}
+                  fixture={fixture}
+                  highlightTeamId={teamId}
+                  showProbability
+                />
               ))}
             </div>
+            {upcoming.length === 0 && (
+              <div className="surface-panel p-5 text-sm text-muted-foreground">
+                No kick-offs scheduled yet — fixtures appear as soon as the next round is released.
+              </div>
+            )}
           </div>
         </section>
 
