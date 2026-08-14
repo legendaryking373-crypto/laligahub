@@ -172,10 +172,96 @@ export async function fetchUpcoming(limit: number): Promise<unknown[]> {
     `fixtures?league=${LEAGUE_ID}&season=${season}`,
     60 * 60 * 3,
   );
-  return all
+  const seasonFixtures = all
     .filter((f) => ["NS", "TBD", "PST"].includes(f.fixture.status.short))
     .sort((a, b) => a.fixture.timestamp - b.fixture.timestamp)
     .slice(0, limit);
+  if (seasonFixtures.length > 0) return seasonFixtures;
+
+  return fetchEspnUpcoming(limit);
+}
+
+type EspnCompetitor = {
+  homeAway: "home" | "away";
+  team: { id: string; displayName: string; logo?: string };
+  score?: string;
+  winner?: boolean;
+};
+
+type EspnEvent = {
+  id: string;
+  date: string;
+  season?: { year?: number };
+  competitions?: {
+    venue?: { fullName?: string; address?: { city?: string } };
+    competitors?: EspnCompetitor[];
+    status?: { type?: { name?: string; state?: string; completed?: boolean; detail?: string } };
+  }[];
+};
+
+function espnFixtureId(value: string): number {
+  const numeric = Number(value);
+  if (Number.isSafeInteger(numeric)) return numeric;
+  return [...value].reduce((hash, char) => (hash * 31 + char.charCodeAt(0)) >>> 0, 0);
+}
+
+/** Keyless fallback schedule used when the primary provider is unavailable. */
+async function fetchEspnUpcoming(limit: number): Promise<unknown[]> {
+  const now = new Date();
+  const end = new Date(now);
+  end.setUTCDate(end.getUTCDate() + 90);
+  const compactDate = (date: Date) => date.toISOString().slice(0, 10).replaceAll("-", "");
+  const url = `https://site.api.espn.com/apis/site/v2/sports/soccer/esp.1/scoreboard?dates=${compactDate(now)}-${compactDate(end)}&limit=100`;
+
+  try {
+    const response = await fetch(url, { headers: { accept: "application/json" } });
+    if (!response.ok) return [];
+    const payload = (await response.json()) as { events?: EspnEvent[] };
+
+    return (payload.events ?? [])
+      .filter((event) => new Date(event.date).getTime() >= now.getTime())
+      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+      .slice(0, limit)
+      .flatMap((event) => {
+        const competition = event.competitions?.[0];
+        const home = competition?.competitors?.find((team) => team.homeAway === "home");
+        const away = competition?.competitors?.find((team) => team.homeAway === "away");
+        if (!competition || !home || !away) return [];
+
+        const kickoff = new Date(event.date);
+        return [{
+          fixture: {
+            id: espnFixtureId(event.id),
+            date: event.date,
+            timestamp: Math.floor(kickoff.getTime() / 1000),
+            venue: {
+              name: competition.venue?.fullName ?? null,
+              city: competition.venue?.address?.city ?? null,
+            },
+            status: { long: "Not Started", short: "NS", elapsed: null },
+          },
+          league: { round: competition.status?.type?.detail ?? "Spanish LALIGA" },
+          teams: {
+            home: {
+              id: Number(home.team.id),
+              name: home.team.displayName,
+              logo: home.team.logo ?? "",
+              winner: null,
+            },
+            away: {
+              id: Number(away.team.id),
+              name: away.team.displayName,
+              logo: away.team.logo ?? "",
+              winner: null,
+            },
+          },
+          goals: { home: null, away: null },
+        }];
+      });
+  } catch (error) {
+    console.error("ESPN upcoming fixtures fallback failed", error);
+    return [];
+  }
 }
 
 /** Recent transfers for a club (free endpoint, not season-limited). */
